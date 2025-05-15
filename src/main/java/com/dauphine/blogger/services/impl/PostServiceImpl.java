@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.models.Post;
 import com.dauphine.blogger.services.PostService;
 
@@ -17,7 +18,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getAllByCategoryId(UUID categoryId) {
         return temporaryPosts.stream()
-                .filter(post -> post.getCategoryId().equals(categoryId))
+                .filter(post -> post.getCategory().getId().equals(categoryId)) // ✅ accède à l'ID via category
                 .toList();
     }
 
@@ -36,7 +37,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post create(String title, String content, UUID categoryId) {
-        Post post = new Post(UUID.randomUUID(), title, content, categoryId);
+        // ✅ crée une fausse catégorie temporaire
+        Category category = new Category(categoryId, "Temporary category"); 
+        Post post = new Post(UUID.randomUUID(), title, content, category);
         temporaryPosts.add(post);
         return post;
     }

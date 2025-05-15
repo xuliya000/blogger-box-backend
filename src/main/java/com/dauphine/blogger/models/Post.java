@@ -1,18 +1,43 @@
 package com.dauphine.blogger.models;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Post {
-    private UUID id;
-    private String title;
-    private String content;
-    private UUID categoryId;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
-    public Post(UUID id, String title, String content, UUID categoryId) {
+@Entity
+@Table(name = "post")
+public class Post {
+
+    @Id
+    @Column(name="id")
+    private UUID id;
+
+    @Column(name="title")
+    private String title;
+
+    @Column(name="content")
+    private String content;
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    public Post() {}
+
+    public Post(UUID id, String title, String content, Category categoryId) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.categoryId = categoryId;
+        this.category = category;
     }
 
     public UUID getId() {
@@ -27,8 +52,8 @@ public class Post {
         return content;
     }
 
-    public UUID getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
     public void setTitle(String title) {
@@ -39,7 +64,7 @@ public class Post {
         this.content = content;
     }
 
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
