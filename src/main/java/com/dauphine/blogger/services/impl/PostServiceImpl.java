@@ -15,10 +15,20 @@ public class PostServiceImpl implements PostService {
 
     private final List<Post> temporaryPosts = new ArrayList<>();
 
+    public PostServiceImpl() {
+        // Initialisation optionnelle avec des données fictives
+        Category cat1 = new Category(UUID.randomUUID(), "Tech");
+        Category cat2 = new Category(UUID.randomUUID(), "Art");
+
+        temporaryPosts.add(new Post("First Post", "This is the first post content", cat1));
+        temporaryPosts.add(new Post("Second Post", "This is the second post content", cat2));
+        temporaryPosts.add(new Post("Another Post", "Belongs to Tech", cat1));
+    }
+
     @Override
     public List<Post> getAllByCategoryId(UUID categoryId) {
         return temporaryPosts.stream()
-                .filter(post -> post.getCategory().getId().equals(categoryId)) // ✅ accède à l'ID via category
+                .filter(post -> post.getCategory().getId().equals(categoryId))
                 .toList();
     }
 
@@ -37,9 +47,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post create(String title, String content, UUID categoryId) {
-        // ✅ crée une fausse catégorie temporaire
-        Category category = new Category(categoryId, "Temporary category"); 
-        Post post = new Post(UUID.randomUUID(), title, content, category);
+        // Création d'une catégorie fictive (car pas encore connectée à une vraie base)
+        Category category = new Category(categoryId, "Temporary category");
+        Post post = new Post(title, content, category); // UUID généré dans le constructeur
         temporaryPosts.add(post);
         return post;
     }

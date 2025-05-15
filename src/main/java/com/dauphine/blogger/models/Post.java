@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,30 +16,37 @@ import jakarta.persistence.Table;
 public class Post {
 
     @Id
-    @Column(name="id")
+    @GeneratedValue
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name="title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name="content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    public Post() {}
+    // === Constructeurs ===
 
-    public Post(UUID id, String title, String content, Category categoryId) {
-        this.id = id;
+    public Post() {
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public Post(String title, String content, Category category) {
         this.title = title;
         this.content = content;
         this.category = category;
+        this.createdDate = LocalDateTime.now();
     }
+
+    // === Getters & Setters ===
 
     public UUID getId() {
         return id;
@@ -48,20 +56,24 @@ public class Post {
         return title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     public void setCategory(Category category) {
