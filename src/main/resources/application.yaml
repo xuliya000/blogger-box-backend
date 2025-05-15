@@ -1,0 +1,6 @@
+    spring:
+        application:
+            name: Blogger Box Backend
+
+    server:
+        port: 1234
