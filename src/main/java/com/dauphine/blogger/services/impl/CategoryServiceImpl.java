@@ -49,4 +49,11 @@ public class CategoryServiceImpl implements CategoryService {
         repository.deleteById(id);
         return true;
     }
+
+    @Override
+    public List<Category> getAllLikeName(String name) {
+        return repository.findAllLikeName(name);
+    }
+
+
 }

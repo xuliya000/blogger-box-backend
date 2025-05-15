@@ -1,7 +1,7 @@
 package com.dauphine.blogger.controllers;
 
-import com.dauphine.blogger.models.Category;
-import com.dauphine.blogger.services.CategoryService;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,16 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dauphine.blogger.models.Category;
+import com.dauphine.blogger.services.CategoryService;
 
-import java.util.List;
-import java.util.UUID;
+import io.swagger.v3.oas.annotations.Operation;
 
 
 @RestController
 @RequestMapping("/v1/categories")
 public class CategoryController {
+    
     
     private final CategoryService service;
 
@@ -28,8 +31,15 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> retrieveAllCategories(){
-        return service.getAll();
+    @Operation(
+        summary="Get all categories",
+        description="Retrieve all categories or filter like name"
+    )
+    public List<Category> getAll(@RequestParam(required=false) String name){
+        List<Category> categories = name == null || name.isBlank()
+                ? service.getAll()
+                : service.getAllLikeName(name);
+        return categories;
     }
 
     @GetMapping("{id}")
