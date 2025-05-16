@@ -27,8 +27,8 @@ public class Post {
 
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
-
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+    
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
